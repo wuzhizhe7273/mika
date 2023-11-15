@@ -1,0 +1,7 @@
+POST http://localhost:1235/api/v1/category
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjA4Mjk2N2E5LTNlODItNDgyZi1iMTlhLTgwNzVmMjdkNjZkZSIsImV4cCI6MTY5OTk2MTA5NH0.OErq9mHJE8QDd2PnuRBRRvGM9cviEAvt6UjHWiJZtok
+Content-Type: application/json
+
+{
+    "name":"test"
+}
