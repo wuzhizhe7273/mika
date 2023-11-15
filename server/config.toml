@@ -1,0 +1,6 @@
+database_url="postgres://wanderer:chjh605319@127.0.0.1:5432/mika"
+front_api_addr="0.0.0.0:1234"
+admin_api_addr="0.0.0.0:1235"
+forestage_addr="0.0.0.0:1236"
+backstage_addr="0.0.0.0:1237"
+jwt_key="ydnohdhefsadjidjioej"
