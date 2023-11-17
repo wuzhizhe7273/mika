@@ -1,11 +1,21 @@
-use crate::{extractor::rbac::Rbac, model::req:: category::CreateCategory, result::AppResult, service::category::CategoryService};
+use crate::{
+    extractor::rbac::Rbac,
+    model::req::{
+        category::{CreateCategory, GetCategoryList, UpdateCategory, UpdateCategoryQuery},
+        universal::IDs,
+    },
+    result::AppResult,
+    service::category::CategoryService,
+};
 use axum::{
+    extract::{Path, Query},
     response::{IntoResponse, Response},
     Json,
 };
 use axum_valid::Garde;
 use http::StatusCode;
 use serde_json::json;
+use uuid::Uuid;
 
 #[utoipa::path(
     post,
@@ -19,7 +29,49 @@ pub async fn create(
     Rbac(_user_id): Rbac,
     Garde(Json(req)): Garde<Json<CreateCategory>>,
 ) -> AppResult<Response> {
-    let id=CategoryService::create(req).await?;
+    let id = CategoryService::create(req).await?;
+    Ok((
+        StatusCode::OK,
+        Json(json!({
+            "id":id
+        })),
+    )
+        .into_response())
+}
+#[utoipa::path(get, path = "/api/v1/category", params(GetCategoryList))]
+pub async fn list(Garde(Query(req)): Garde<Query<GetCategoryList>>) -> AppResult<Response> {
+    let page = CategoryService::list(req).await?;
+    Ok((StatusCode::OK, Json(page)).into_response())
+}
+#[utoipa::path(
+    delete,
+    path="/api/v1/category",
+    request_body=IDs
+)]
+pub async fn delete(Garde(Json(req)): Garde<Json<IDs>>) -> AppResult<Response> {
+    let rows = CategoryService::delete(req.ids).await?;
+    Ok((
+        StatusCode::OK,
+        Json(json!({
+            "rows":rows
+        })),
+    )
+        .into_response())
+}
+#[utoipa::path(
+    delete,
+    path="/api/v1/category/{id}",
+    request_body=UpdateCategory
+)]
+pub async fn update(
+    Garde(Path(id)): Garde<Path<Uuid>>,
+    Garde(Json(req)): Garde<Json<UpdateCategory>>,
+) -> AppResult<Response> {
+    let req=UpdateCategoryQuery{
+        id:id,
+        name:req.name
+    };
+    let id=CategoryService::update(req).await?;
     Ok((StatusCode::OK,Json(json!({
         "id":id
     }))).into_response())

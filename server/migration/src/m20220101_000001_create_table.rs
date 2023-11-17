@@ -24,13 +24,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(User::Avatar).string())
                     .col(
                         ColumnDef::new(User::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(User::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -56,13 +56,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Role::ParentId).uuid())
                     .col(
                         ColumnDef::new(Role::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Role::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -103,13 +103,13 @@ impl MigrationTrait for Migration {
                     )
                     .col(
                         ColumnDef::new(Resource::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Resource::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -130,13 +130,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Menu::Order).integer().not_null().default(0))
                     .col(
                         ColumnDef::new(Menu::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Menu::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -253,13 +253,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Category::Name).string().not_null())
                     .col(
                         ColumnDef::new(Category::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Category::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -285,13 +285,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Article::Content).string().not_null())
                     .col(
                         ColumnDef::new(Article::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Article::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -319,13 +319,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Tag::Name).string().not_null())
                     .col(
                         ColumnDef::new(Tag::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Tag::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
@@ -374,13 +374,13 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Comment::Content).string().not_null())
                     .col(
                         ColumnDef::new(Comment::UpdatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
                     .col(
                         ColumnDef::new(Comment::CreatedAt)
-                            .timestamp()
+                            .timestamp_with_time_zone()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )

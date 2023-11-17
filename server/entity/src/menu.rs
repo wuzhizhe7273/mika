@@ -13,8 +13,8 @@ pub struct Model {
     pub desc: String,
     pub parent_id: Option<Uuid>,
     pub order: i32,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

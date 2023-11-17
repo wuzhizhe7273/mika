@@ -11,8 +11,8 @@ pub struct Model {
     pub name: String,
     pub desc: String,
     pub parent_id: Option<Uuid>,
-    pub updated_at: DateTime,
-    pub created_at: DateTime,
+    pub updated_at: DateTimeWithTimeZone,
+    pub created_at: DateTimeWithTimeZone,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

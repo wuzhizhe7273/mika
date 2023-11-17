@@ -14,8 +14,8 @@ pub struct Model {
     pub password: String,
     pub nickname: Option<String>,
     pub avatar: Option<String>,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

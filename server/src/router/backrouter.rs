@@ -1,8 +1,11 @@
-use axum::{routing::{get,post, delete}, Router};
+use axum::{
+    routing::{delete, get, post},
+    Router,
+};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{util::apidoc::ApiDoc, api};
+use crate::{api, util::apidoc::ApiDoc};
 
 pub async fn create() -> Router {
     Router::new()
@@ -12,7 +15,12 @@ pub async fn create() -> Router {
         .route("/api/v1/user", delete(api::user::delete))
         .route("/api/v1/resource", post(api::resource::create))
         .route("/api/v1/role", post(api::role::create))
-        .route("/api/v1/category", post(api::category::create))
+        .route(
+            "/api/v1/category",
+            post(api::category::create)
+                .get(api::category::list)
+                .delete(api::category::delete),
+        )
         .route("/api/v1/tag", post(api::tag::create))
         .route("/api/v1/comment", post(api::comment::create))
         .route("/api/v1/article", post(api::article::create))

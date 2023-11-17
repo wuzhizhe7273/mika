@@ -12,8 +12,8 @@ pub struct Model {
     pub reply_id: Option<Uuid>,
     pub article_id: Uuid,
     pub content: String,
-    pub updated_at: DateTime,
-    pub created_at: DateTime,
+    pub updated_at: DateTimeWithTimeZone,
+    pub created_at: DateTimeWithTimeZone,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

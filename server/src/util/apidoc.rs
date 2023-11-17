@@ -10,8 +10,13 @@ use crate::model::req::{
 use crate::{
     api::{article, category, comment, menu, resource, role, tag, user},
     model::req::{
-        article::CreateArticle, category::CreateCategory, comment::CreateComment, menu::CreateMenu,
-        resource::CreateResource, role::CreateRole, tag::CreateTag,
+        article::CreateArticle,
+        category::{CreateCategory, UpdateCategory},
+        comment::CreateComment,
+        menu::CreateMenu,
+        resource::CreateResource,
+        role::CreateRole,
+        tag::CreateTag,
     },
 };
 #[derive(OpenApi)]
@@ -23,6 +28,9 @@ use crate::{
         resource::create,
         role::create,
         category::create,
+        category::list,
+        category::delete,
+        category::update,
         tag::create,
         comment::create,
         article::create,
@@ -35,6 +43,7 @@ use crate::{
         CreateRole,
         CreateResource,
         CreateCategory,
+        UpdateCategory,
         CreateTag,
         CreateComment,
         CreateArticle,
