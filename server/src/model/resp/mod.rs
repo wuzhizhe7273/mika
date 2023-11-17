@@ -1,4 +1,7 @@
 pub mod category;
+pub mod tag;
+pub mod article;
+pub mod user;
 use serde::Serialize;
 
 #[derive(Serialize)]

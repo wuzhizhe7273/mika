@@ -59,12 +59,15 @@ pub async fn delete(Garde(Json(req)): Garde<Json<IDs>>) -> AppResult<Response> {
         .into_response())
 }
 #[utoipa::path(
-    delete,
+    put,
     path="/api/v1/category/{id}",
-    request_body=UpdateCategory
+    request_body=UpdateCategory,
+    params(
+        ("id"=Uuid,Path,description = "category id")
+    )
 )]
 pub async fn update(
-    Garde(Path(id)): Garde<Path<Uuid>>,
+    Path(id): Path<Uuid>,
     Garde(Json(req)): Garde<Json<UpdateCategory>>,
 ) -> AppResult<Response> {
     let req=UpdateCategoryQuery{

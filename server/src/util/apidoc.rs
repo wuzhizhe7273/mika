@@ -10,7 +10,7 @@ use crate::model::req::{
 use crate::{
     api::{article, category, comment, menu, resource, role, tag, user},
     model::req::{
-        article::CreateArticle,
+        article::{CreateArticle, UpdateArticle},
         category::{CreateCategory, UpdateCategory},
         comment::CreateComment,
         menu::CreateMenu,
@@ -32,8 +32,14 @@ use crate::{
         category::delete,
         category::update,
         tag::create,
+        tag::list,
+        tag::delete,
+        tag::update,
         comment::create,
         article::create,
+        article::list,
+        article::delete,
+        article::update,
         menu::create
 
     ),
@@ -47,6 +53,7 @@ use crate::{
         CreateTag,
         CreateComment,
         CreateArticle,
+        UpdateArticle,
         CreateMenu,
         IDs,
     )),

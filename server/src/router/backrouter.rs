@@ -1,5 +1,5 @@
 use axum::{
-    routing::{delete, get, post},
+    routing::{delete, get, post,put},
     Router,
 };
 use utoipa::OpenApi;
@@ -19,11 +19,12 @@ pub async fn create() -> Router {
             "/api/v1/category",
             post(api::category::create)
                 .get(api::category::list)
-                .delete(api::category::delete),
+                .delete(api::category::delete)
         )
-        .route("/api/v1/tag", post(api::tag::create))
+        .route("/api/v1/category/:id", put(api::category::update))
+        .route("/api/v1/tag", post(api::tag::create).get(api::tag::list))
         .route("/api/v1/comment", post(api::comment::create))
-        .route("/api/v1/article", post(api::article::create))
+        .route("/api/v1/article", post(api::article::create).get(api::article::list).delete(api::article::delete))
         .route("/api/v1/menu", post(api::menu::create))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
 }

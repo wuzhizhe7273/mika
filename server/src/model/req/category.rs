@@ -11,6 +11,7 @@ pub struct CreateCategory {
 
 
 #[derive(Debug, Validate, Deserialize, IntoParams)]
+#[into_params(parameter_in= Query)]
 pub struct GetCategoryList{
     #[garde(range(min = 1))]
     pub page_size: u64,
@@ -31,7 +32,7 @@ pub struct GetCategoryList{
 }
 fn is_good_orderby(value: &str,_context:&()) -> garde::Result {
     match value {
-        "name"|"updated_at"|"created_at" => {
+        "name"|"updated_at"|"created_at"|"article_count" => {
             return Ok(());
         }
         _ => {
