@@ -5,13 +5,13 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "menu")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
+    #[sea_orm(primary_key)]
+    pub id: i64,
     #[sea_orm(unique)]
     pub name: String,
     pub menu_type: String,
     pub desc: String,
-    pub parent_id: Option<Uuid>,
+    pub parent_id: Option<i64>,
     pub order: i32,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,

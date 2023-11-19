@@ -7,3 +7,8 @@ pub mod tag;
 pub mod comment;
 pub mod article;
 pub mod menu;
+
+pub struct PermQuery<T>{
+    pub auth:i64,
+    pub req:T
+}

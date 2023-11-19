@@ -5,11 +5,12 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "article")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
+    #[sea_orm(primary_key)]
+    pub id: i64,
+    pub forum_id: i64,
     pub title: String,
-    pub user_id: Uuid,
-    pub category_id: Option<Uuid>,
+    pub user_id: i64,
+    pub category_id: Option<i64>,
     pub desc: String,
     pub content: String,
     pub created_at: DateTimeWithTimeZone,
@@ -28,6 +29,14 @@ pub enum Relation {
     Category,
     #[sea_orm(has_many = "super::comment::Entity")]
     Comment,
+    #[sea_orm(
+        belongs_to = "super::forum::Entity",
+        from = "Column::ForumId",
+        to = "super::forum::Column::Id",
+        on_update = "NoAction",
+        on_delete = "NoAction"
+    )]
+    Forum,
     #[sea_orm(has_many = "super::r_article_tag::Entity")]
     RArticleTag,
     #[sea_orm(
@@ -49,6 +58,12 @@ impl Related<super::category::Entity> for Entity {
 impl Related<super::comment::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Comment.def()
+    }
+}
+
+impl Related<super::forum::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Forum.def()
     }
 }
 

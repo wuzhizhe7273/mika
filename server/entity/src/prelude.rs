@@ -3,11 +3,12 @@
 pub use super::article::Entity as Article;
 pub use super::category::Entity as Category;
 pub use super::comment::Entity as Comment;
+pub use super::forum::Entity as Forum;
 pub use super::menu::Entity as Menu;
 pub use super::r_article_tag::Entity as RArticleTag;
 pub use super::r_role_menu::Entity as RRoleMenu;
 pub use super::r_role_rersource::Entity as RRoleRersource;
-pub use super::r_user_role::Entity as RUserRole;
+pub use super::r_user_role_forum::Entity as RUserRoleForum;
 pub use super::resource::Entity as Resource;
 pub use super::role::Entity as Role;
 pub use super::tag::Entity as Tag;

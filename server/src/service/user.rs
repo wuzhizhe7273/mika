@@ -5,7 +5,7 @@ use crate::{result::AppResult, model::req::user::{RegisterUser, LoginUser}, util
 pub struct UserService;
 
 impl UserService {
-    pub async fn register(req:RegisterUser)->AppResult<Uuid>{
+    pub async fn register(req:RegisterUser)->AppResult<i64>{
         let pwd=hash_password(req.password).await?;
         let user=RegisterUser{
             username:req.username,

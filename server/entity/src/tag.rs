@@ -5,8 +5,9 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "tag")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
+    #[sea_orm(primary_key)]
+    pub id: i64,
+    pub forum_id: i64,
     pub name: String,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
@@ -14,8 +15,22 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::forum::Entity",
+        from = "Column::ForumId",
+        to = "super::forum::Column::Id",
+        on_update = "NoAction",
+        on_delete = "NoAction"
+    )]
+    Forum,
     #[sea_orm(has_many = "super::r_article_tag::Entity")]
     RArticleTag,
+}
+
+impl Related<super::forum::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Forum.def()
+    }
 }
 
 impl Related<super::r_article_tag::Entity> for Entity {

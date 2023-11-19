@@ -1,12 +1,16 @@
 use async_trait::async_trait;
 use axum::{extract::FromRequestParts, RequestPartsExt};
+use entity::{r_role_rersource, r_user_role_forum, resource, role};
 use http::request::Parts;
-use sea_orm::{ConnectionTrait, DatabaseBackend, EntityTrait, LoaderTrait, Statement};
-use uuid::Uuid;
+use sea_orm::{
+    ColumnTrait, ConnectionTrait, DatabaseBackend, EntityTrait, LoaderTrait, QueryFilter,
+    QuerySelect, RelationTrait, Statement,
+};
+use sea_query::JoinType;
 
 use crate::{extractor::jwt::Claims, init::db, result::AppError};
 
-pub struct Rbac(pub Uuid);
+pub struct Rbac(pub i64);
 
 #[async_trait]
 impl<S> FromRequestParts<S> for Rbac
@@ -16,74 +20,47 @@ where
     type Rejection = AppError;
     async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
         let path = parts.uri.path().to_string();
-        tracing::debug!("path:{}",path);
         let Claims { id, .. } = parts
             .extract::<Claims>()
             .await
             .map_err(|e| AppError::Unauthorized)?;
-        tracing::debug!("decode jwt success");
-        let user = entity::user::Entity::find_by_id(id)
+        let user_id = entity::user::Entity::find_by_id(id)
             .one(db())
             .await?
             .ok_or_else(|| AppError::Unauthorized)?
             .id;
-        let backend: sea_orm::DatabaseBackend = db().get_database_backend();
-        let roles = match backend {
-            DatabaseBackend::Postgres => entity::role::Entity::find()
-                .from_raw_sql(Statement::from_sql_and_values(
-                    backend,
-                    r#"
-                    WITH RECURSIVE roles(id) AS (
-                        SELECT role.* FROM role JOIN r_user_role ON role.id = r_user_role.role_id WHERE r_user_role.user_id=$1
-                        UNION ALL
-                        SELECT role.* FROM role INNER JOIN roles r ON role.parent_id=r.id
-                    )
-                    SELECT * FROM roles;
-            "#,
-                    [user.into()],
-                ))
-                .all(db())
-                .await
-                .map_err(|e| AppError::Forbidden),
-            DatabaseBackend::Sqlite | DatabaseBackend::MySql => entity::role::Entity::find()
-                .from_raw_sql(Statement::from_sql_and_values(
-                    backend,
-                    r#"
-                    WITH RECURSIVE roles(id) AS (
-                        SELECT role.* FROM role JOIN r_user_role ON role.id = r_user_role.role_id WHERE r_user_role.user_id=?
-                        UNION ALL
-                        SELECT role.* FROM role INNER JOIN roles r ON role.parent_id=r.id
-                    )
-                    SELECT * FROM roles;
-            "#,
-                    [user.into()],
-                ))
-                .all(db())
-                .await
-                .map_err(|e| AppError::Forbidden),
-        }?;
-        // 如果是超级用户,则拥有所有权限
-        if roles.clone().into_iter().any(|r|{r.name=="SuperUser"}) {
-            return Ok(Rbac(user));
-        }
-        //根据角色加载资源
-        let resources = roles
-            .load_many_to_many(
-                entity::resource::Entity,
-                entity::r_role_rersource::Entity, 
-                db(),
+        let forum_role: Vec<(i64, i16)> = entity::r_user_role_forum::Entity::find()
+            .filter(r_user_role_forum::Column::UserId.eq(user_id))
+            .select_only()
+            .column(role::Column::Id)
+            .column(role::Column::Rtype)
+            .join(
+                JoinType::LeftJoin,
+                role::Relation::RUserRoleForum.def().rev(),
             )
+            .distinct()
+            .into_tuple()
+            .all(db())
             .await
-            .map_err(|e| AppError::Forbidden)?;
-        // 检查资源中是否包含指定权限
-        for resource in resources {
-            match resource.into_iter().any(|r| r.href == path) {
-                true => {
-                    return Ok(Rbac(user));
-                }
-                false => {}
-            }
+            .map_err(|_| AppError::Forbidden)?;
+        // 如果是超级用户,则拥有所有权限
+        if forum_role.clone().into_iter().any(|(_, rtype)| rtype == 0) {
+            return Ok(Rbac(user_id));
         }
-        Err(AppError::Forbidden)
+        let roles_id = forum_role
+            .into_iter()
+            .map(|(id, _)| id)
+            .collect::<Vec<i64>>();
+        let resources = resource::Entity::find()
+            .filter(r_role_rersource::Column::RoleId.is_in(roles_id))
+            .join(JoinType::LeftJoin, resource::Relation::RRoleRersource.def())
+            .all(db())
+            .await
+            .map_err(|_| AppError::Forbidden)?;
+        // 检查资源中是否包含指定权限
+        match resources.into_iter().any(|r| r.href == path) {
+            true => return Ok(Rbac(user_id)),
+            false => return Err(AppError::Forbidden),
+        }
     }
 }

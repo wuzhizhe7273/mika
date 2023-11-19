@@ -5,7 +5,7 @@ use crate::{
     api::article,
     init::db,
     model::{
-        req::category::{CreateCategory, GetCategoryList, UpdateCategoryQuery},
+        req::{category::{CreateCategory, GetCategoryList, UpdateCategoryQuery}, PermQuery},
         resp::{category::CategoryVO, Pagination},
     },
     result::{AppResult, AppError},
@@ -17,10 +17,11 @@ use sea_orm::{
 
 pub struct CategoryDAO;
 impl CategoryDAO {
-    pub async fn create(c: CreateCategory) -> AppResult<Uuid> {
+    pub async fn create(query:PermQuery<CreateCategory>) -> AppResult<i64> {
+        let c=query.req;
         let category = entity::category::ActiveModel {
-            id: Set(Uuid::new_v4()),
             name: Set(c.name),
+            forum_id:Set(c.forum_id),
             ..Default::default()
         };
         let res = entity::category::Entity::insert(category)

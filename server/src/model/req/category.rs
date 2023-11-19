@@ -5,11 +5,17 @@ use uuid::Uuid;
 
 #[derive(Debug, Validate, Deserialize, ToSchema)]
 pub struct CreateCategory {
+    #[garde(range(min=1))]
+    pub forum_id:i64,
     #[garde(length(min = 1))]
     pub name: String,
 }
 
-
+pub struct CreateCategoryQuery{
+    pub auth_user:i64,
+    pub forum_id:i64,
+    pub name: String,
+}
 #[derive(Debug, Validate, Deserialize, IntoParams)]
 #[into_params(parameter_in= Query)]
 pub struct GetCategoryList{

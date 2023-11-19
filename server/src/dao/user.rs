@@ -7,9 +7,8 @@ use sea_orm::{ActiveValue::Set, ColumnTrait, EntityTrait, QueryFilter};
 use uuid::Uuid;
 pub struct UserDAO;
 impl UserDAO {
-    pub async fn create(u: RegisterUser) -> AppResult<Uuid> {
+    pub async fn create(u: RegisterUser) -> AppResult<i64> {
         let user = entity::user::ActiveModel {
-            id: Set(Uuid::new_v4()),
             username: Set(u.username),
             email: Set(u.email),
             password: Set(u.password),
@@ -26,7 +25,7 @@ impl UserDAO {
         Ok(res.rows_affected)
     }
 
-    pub async fn get_pwd(email: String) -> AppResult<(Uuid,String)> {
+    pub async fn get_pwd(email: String) -> AppResult<(i64,String)> {
         let user = entity::user::Entity::find()
             .filter(entity::user::Column::Email.eq(email))
             .one(db())

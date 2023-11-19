@@ -3,16 +3,26 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "r_user_role")]
+#[sea_orm(table_name = "r_user_role_forum")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
-    pub user_id: Uuid,
+    pub user_id: i64,
     #[sea_orm(primary_key, auto_increment = false)]
-    pub role_id: Uuid,
+    pub role_id: i64,
+    #[sea_orm(primary_key, auto_increment = false)]
+    pub forum_id: i64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::forum::Entity",
+        from = "Column::ForumId",
+        to = "super::forum::Column::Id",
+        on_update = "NoAction",
+        on_delete = "NoAction"
+    )]
+    Forum,
     #[sea_orm(
         belongs_to = "super::role::Entity",
         from = "Column::RoleId",
@@ -29,6 +39,12 @@ pub enum Relation {
         on_delete = "NoAction"
     )]
     User,
+}
+
+impl Related<super::forum::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Forum.def()
+    }
 }
 
 impl Related<super::role::Entity> for Entity {

@@ -14,7 +14,7 @@ use crate::{result::{AppError, AppResult}, config::CONFIG};
 
 #[derive(Deserialize, Serialize)]
 pub struct Claims {
-    pub id: Uuid,
+    pub id: i64,
     pub exp: usize,
 }
 

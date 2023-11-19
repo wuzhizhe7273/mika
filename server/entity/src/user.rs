@@ -5,8 +5,8 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "user")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
+    #[sea_orm(primary_key)]
+    pub id: i64,
     #[sea_orm(unique)]
     pub username: String,
     #[sea_orm(unique)]
@@ -22,8 +22,8 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::article::Entity")]
     Article,
-    #[sea_orm(has_many = "super::r_user_role::Entity")]
-    RUserRole,
+    #[sea_orm(has_many = "super::r_user_role_forum::Entity")]
+    RUserRoleForum,
 }
 
 impl Related<super::article::Entity> for Entity {
@@ -32,18 +32,9 @@ impl Related<super::article::Entity> for Entity {
     }
 }
 
-impl Related<super::r_user_role::Entity> for Entity {
+impl Related<super::r_user_role_forum::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::RUserRole.def()
-    }
-}
-
-impl Related<super::role::Entity> for Entity {
-    fn to() -> RelationDef {
-        super::r_user_role::Relation::Role.def()
-    }
-    fn via() -> Option<RelationDef> {
-        Some(super::r_user_role::Relation::User.def().rev())
+        Relation::RUserRoleForum.def()
     }
 }
 

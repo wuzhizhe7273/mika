@@ -3,7 +3,7 @@ use uuid::Uuid;
 use crate::{
     dao::category::CategoryDAO,
     model::{
-        req::category::{CreateCategory, GetCategoryList, UpdateCategoryQuery},
+        req::{category::{CreateCategory, GetCategoryList, UpdateCategoryQuery}, PermQuery},
         resp::{category::CategoryVO, Pagination},
     },
     result::AppResult,
@@ -11,7 +11,7 @@ use crate::{
 
 pub struct CategoryService;
 impl CategoryService {
-    pub async fn create(req: CreateCategory) -> AppResult<Uuid> {
+    pub async fn create(req: PermQuery<CreateCategory>) -> AppResult<Uuid> {
         CategoryDAO::create(req).await
     }
     pub async fn list(req: GetCategoryList) -> AppResult<Pagination<CategoryVO>> {

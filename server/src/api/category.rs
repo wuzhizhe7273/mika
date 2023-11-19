@@ -1,8 +1,8 @@
 use crate::{
     extractor::rbac::Rbac,
     model::req::{
-        category::{CreateCategory, GetCategoryList, UpdateCategory, UpdateCategoryQuery},
-        universal::IDs,
+        category::{CreateCategory, GetCategoryList, UpdateCategory, UpdateCategoryQuery, CreateCategoryQuery},
+        universal::IDs, PermQuery,
     },
     result::AppResult,
     service::category::CategoryService,
@@ -26,10 +26,14 @@ use uuid::Uuid;
     )
 )]
 pub async fn create(
-    Rbac(_user_id): Rbac,
+    Rbac(user_id): Rbac,
     Garde(Json(req)): Garde<Json<CreateCategory>>,
 ) -> AppResult<Response> {
-    let id = CategoryService::create(req).await?;
+    let query=PermQuery{
+        auth:user_id,
+        req:req
+    };
+    let id = CategoryService::create(query).await?;
     Ok((
         StatusCode::OK,
         Json(json!({
