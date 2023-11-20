@@ -13,7 +13,7 @@ pub struct CreateMenu{
     #[serde(default)]
     pub desc:String,
     #[garde(skip)]
-    pub parent_id:Option<Uuid>,
+    pub parent_id:Option<i64>,
     #[garde(skip)]
     #[serde(default)]
     pub order:i32

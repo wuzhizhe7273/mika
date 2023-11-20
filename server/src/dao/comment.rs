@@ -5,11 +5,11 @@ use crate::{model::req::comment::CreateCommentQuery, result::AppResult, init::db
 
 pub struct  CommentDAO;
 impl CommentDAO {
-    pub async fn create(req:CreateCommentQuery)->AppResult<Uuid>{
+    pub async fn create(req:CreateCommentQuery)->AppResult<i64>{
         let c=entity::comment::ActiveModel{
-            id:Set(Uuid::new_v4()),
             parent_id:Set(req.parent_id),
             user_id:Set(req.user_id),
+            article_id:Set(req.article_id),
             content:Set(req.content),
             ..Default::default()
         };

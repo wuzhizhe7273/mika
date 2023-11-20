@@ -15,6 +15,6 @@ pub struct CategoryVO{
 
 #[derive(Serialize)]
 pub struct CategoryOptionVO{
-    pub id:Uuid,
+    pub id:i64,
     pub name:String
 }

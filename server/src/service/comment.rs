@@ -4,7 +4,7 @@ use crate::{model::req::comment:: CreateCommentQuery, result::AppResult, dao::co
 
 pub struct CommentService;
 impl CommentService {
-    pub async fn create(req:CreateCommentQuery)->AppResult<Uuid>{
+    pub async fn create(req:CreateCommentQuery)->AppResult<i64>{
         CommentDAO::create(req).await
     }
 }

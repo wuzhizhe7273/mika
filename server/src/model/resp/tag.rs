@@ -18,6 +18,6 @@ pub struct TagVO{
 #[derive(FromQueryResult,DerivePartialModel,Serialize)]
 #[sea_orm(entity="Tag")]
 pub struct TagOptionVO{
-    pub id:Uuid,
+    pub id:i64,
     pub name:String
 }

@@ -5,12 +5,10 @@ use crate::{init::db, model::req::role::CreateRole, result::AppResult};
 
 pub struct RoleDAO;
 impl RoleDAO {
-    pub async fn create(req: CreateRole) -> AppResult<Uuid> {
+    pub async fn create(req: CreateRole) -> AppResult<i64> {
         let role = entity::role::ActiveModel {
-            id: Set(Uuid::new_v4()),
             name: Set(req.name),
             desc: Set(req.desc),
-            parent_id:Set(req.parent),
             ..Default::default()
         };
         let res = entity::role::Entity::insert(role)

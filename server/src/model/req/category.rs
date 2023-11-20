@@ -57,6 +57,6 @@ pub struct UpdateCategory{
 }
 
 pub struct UpdateCategoryQuery{
-    pub id:Uuid,
+    pub id:i64,
     pub name:String,
 }

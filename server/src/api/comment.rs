@@ -19,7 +19,8 @@ pub async fn create(Rbac(user_id):Rbac,Garde(Json(req)):Garde<Json<CreateComment
         user_id:user_id,
         parent_id:req.parent_id,
         reply_id:req.reply_id,
-        content:req.content
+        content:req.content,
+        article_id:req.article_id
     };
     let id=CommentService::create(c).await?;
     Ok((StatusCode::OK,Json(json!({

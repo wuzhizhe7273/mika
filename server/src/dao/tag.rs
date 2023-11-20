@@ -7,9 +7,8 @@ use crate::{model::{req::tag::{CreateTag, GetTagList, UpdateTagQuery}, resp::{ta
 
 pub struct TagDAO;
 impl TagDAO {
-    pub async fn create(req: CreateTag) -> AppResult<Uuid> {
+    pub async fn create(req: CreateTag) -> AppResult<i64> {
         let tag = entity::tag::ActiveModel {
-            id: Set(Uuid::new_v4()),
             name: Set(req.name),
             ..Default::default()
         };
@@ -48,7 +47,7 @@ impl TagDAO {
         let rows=entity::tag::Entity::delete_many().filter(entity::tag::Column::Id.is_in(ids)).exec(db()).await?.rows_affected;
         Ok(rows)
     }
-    pub async fn update(req:UpdateTagQuery)->AppResult<Uuid>{
+    pub async fn update(req:UpdateTagQuery)->AppResult<i64>{
         let t=entity::tag::Entity::find_by_id(req.id).one(db()).await?;
         let mut t:entity::tag::ActiveModel=t.ok_or(AppError::NotFound)?.into();
         t.name=Set(req.name);

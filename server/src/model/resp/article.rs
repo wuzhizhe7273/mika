@@ -7,7 +7,7 @@ use super::{user::UserOptionVO, category::CategoryOptionVO, tag::TagOptionVO};
 
 #[derive(Serialize)]
 pub struct ArticleVO{
-    pub id:Uuid,
+    pub id:i64,
     pub title:String,
     pub user:Option<UserOptionVO>,
     pub category:Option<CategoryOptionVO>,

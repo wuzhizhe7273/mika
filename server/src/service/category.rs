@@ -11,7 +11,7 @@ use crate::{
 
 pub struct CategoryService;
 impl CategoryService {
-    pub async fn create(req: PermQuery<CreateCategory>) -> AppResult<Uuid> {
+    pub async fn create(req: PermQuery<CreateCategory>) -> AppResult<i64> {
         CategoryDAO::create(req).await
     }
     pub async fn list(req: GetCategoryList) -> AppResult<Pagination<CategoryVO>> {
@@ -20,7 +20,7 @@ impl CategoryService {
     pub async fn delete(ids: Vec<Uuid>) -> AppResult<u64> {
         CategoryDAO::detete(ids).await
     }
-    pub async fn update(req: UpdateCategoryQuery) -> AppResult<Uuid> {
+    pub async fn update(req: UpdateCategoryQuery) -> AppResult<i64> {
         CategoryDAO::update(req).await
     }
 }

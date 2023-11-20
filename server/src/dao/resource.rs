@@ -9,9 +9,8 @@ use crate::{
 
 pub struct ResourceDAO;
 impl ResourceDAO {
-    pub async fn create(req: CreateResource) -> AppResult<Uuid> {
+    pub async fn create(req: CreateResource) -> AppResult<i64> {
         let resource = entity::resource::ActiveModel {
-            id: Set(Uuid::new_v4()),
             name: Set(req.name),
             method: Set(req.method),
             href: Set(req.href),

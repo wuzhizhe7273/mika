@@ -6,9 +6,9 @@ use uuid::Uuid;
 #[derive(Debug,Validate,Deserialize,ToSchema)]
 pub struct CreateArticle{
     #[garde(skip)]
-    pub category:Option<Uuid>,
+    pub category:Option<i64>,
     #[garde(length(min=1))]
-    pub tags:Option<Vec<Uuid>>,
+    pub tags:Option<Vec<i64>>,
     #[garde(length(min=1))]
     pub title:String,
     #[garde(skip)]
@@ -19,9 +19,9 @@ pub struct CreateArticle{
 }
 
 pub struct CreateArticleQuery{
-    pub user_id:Uuid,
-    pub category:Option<Uuid>,
-    pub tags:Option<Vec<Uuid>>,
+    pub user_id:i64,
+    pub category:Option<i64>,
+    pub tags:Option<Vec<i64>>,
     pub title:String,   
     pub desc:String,
     pub content:String,
@@ -78,17 +78,17 @@ pub struct UpdateArticle{
     pub content:String,
     #[garde(skip)]
     #[serde(default)]
-    pub category:Option<Uuid>,
+    pub category:Option<i64>,
     #[garde(skip)]
     #[serde(default)]
-    pub tags:Vec<Uuid>
+    pub tags:Vec<i64>
 }
 
 pub struct UpdateArticleQuery{
-    pub id:Uuid,
+    pub id:i64,
     pub title:String,
     pub desc:String,
     pub content:String,
-    pub category:Option<Uuid>,
-    pub tags:Vec<Uuid>
+    pub category:Option<i64>,
+    pub tags:Vec<i64>
 }

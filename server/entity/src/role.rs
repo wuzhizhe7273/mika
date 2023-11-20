@@ -11,7 +11,6 @@ pub struct Model {
     pub name: String,
     pub rtype: i16,
     pub desc: String,
-    pub parent_id: Option<i64>,
     pub updated_at: DateTimeWithTimeZone,
     pub created_at: DateTimeWithTimeZone,
 }
@@ -22,16 +21,8 @@ pub enum Relation {
     RRoleMenu,
     #[sea_orm(has_many = "super::r_role_rersource::Entity")]
     RRoleRersource,
-    #[sea_orm(has_many = "super::r_user_role_forum::Entity")]
-    RUserRoleForum,
-    #[sea_orm(
-        belongs_to = "Entity",
-        from = "Column::ParentId",
-        to = "Column::Id",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    SelfRef,
+    #[sea_orm(has_many = "super::r_user_role::Entity")]
+    RUserRole,
 }
 
 impl Related<super::r_role_menu::Entity> for Entity {
@@ -46,9 +37,9 @@ impl Related<super::r_role_rersource::Entity> for Entity {
     }
 }
 
-impl Related<super::r_user_role_forum::Entity> for Entity {
+impl Related<super::r_user_role::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::RUserRoleForum.def()
+        Relation::RUserRole.def()
     }
 }
 
@@ -67,6 +58,15 @@ impl Related<super::resource::Entity> for Entity {
     }
     fn via() -> Option<RelationDef> {
         Some(super::r_role_rersource::Relation::Role.def().rev())
+    }
+}
+
+impl Related<super::user::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::r_user_role::Relation::User.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::r_user_role::Relation::Role.def().rev())
     }
 }
 

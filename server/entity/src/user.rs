@@ -22,8 +22,8 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::article::Entity")]
     Article,
-    #[sea_orm(has_many = "super::r_user_role_forum::Entity")]
-    RUserRoleForum,
+    #[sea_orm(has_many = "super::r_user_role::Entity")]
+    RUserRole,
 }
 
 impl Related<super::article::Entity> for Entity {
@@ -32,9 +32,18 @@ impl Related<super::article::Entity> for Entity {
     }
 }
 
-impl Related<super::r_user_role_forum::Entity> for Entity {
+impl Related<super::r_user_role::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::RUserRoleForum.def()
+        Relation::RUserRole.def()
+    }
+}
+
+impl Related<super::role::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::r_user_role::Relation::Role.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::r_user_role::Relation::User.def().rev())
     }
 }
 

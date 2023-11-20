@@ -22,9 +22,8 @@ use crate::{
 
 pub struct ArticleDAO;
 impl ArticleDAO {
-    pub async fn create(req: CreateArticleQuery) -> AppResult<Uuid> {
+    pub async fn create(req: CreateArticleQuery) -> AppResult<i64> {
         let article = entity::article::ActiveModel {
-            id: Set(Uuid::new_v4()),
             user_id: Set(req.user_id),
             title: Set(req.title),
             category_id: Set(req.category),
@@ -138,7 +137,7 @@ impl ArticleDAO {
             .rows_affected;
         Ok(rows)
     }
-    pub async fn update(req: UpdateArticleQuery) -> AppResult<Uuid> {
+    pub async fn update(req: UpdateArticleQuery) -> AppResult<i64> {
         let mut article: entity::article::ActiveModel = entity::article::Entity::find_by_id(req.id)
             .one(db())
             .await?

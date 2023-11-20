@@ -71,11 +71,11 @@ pub async fn delete(Garde(Json(req)): Garde<Json<IDs>>) -> AppResult<Response> {
     )
 )]
 pub async fn update(
-    Path(id): Path<Uuid>,
+    Path(id): Path<i64>,
     Garde(Json(req)): Garde<Json<UpdateCategory>>,
 ) -> AppResult<Response> {
     let req=UpdateCategoryQuery{
-        id:id,
+        id,
         name:req.name
     };
     let id=CategoryService::update(req).await?;

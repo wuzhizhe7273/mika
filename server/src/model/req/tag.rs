@@ -50,6 +50,6 @@ pub struct UpdateTag{
 }
 
 pub struct UpdateTagQuery{
-    pub id:Uuid,
+    pub id:i64,
     pub name:String,
 }

@@ -11,7 +11,7 @@ use crate::{
 
 pub struct TagService;
 impl TagService {
-    pub async fn create(req: CreateTag) -> AppResult<Uuid> {
+    pub async fn create(req: CreateTag) -> AppResult<i64> {
         TagDAO::create(req).await
     }
     pub async fn list(req: GetTagList) -> AppResult<Pagination<TagVO>> {
@@ -20,7 +20,7 @@ impl TagService {
     pub async fn delete(ids: Vec<Uuid>) -> AppResult<u64> {
         TagDAO::delete(ids).await
     }
-    pub async fn update(req:UpdateTagQuery)->AppResult<Uuid>{
+    pub async fn update(req:UpdateTagQuery)->AppResult<i64>{
         TagDAO::update(req).await
     }
 }

@@ -13,5 +13,5 @@ pub struct CreateRole{
     #[garde(skip)]
     pub parent:Option<Uuid>,
     #[garde(length(min=1))]
-    pub resource:Option<Vec<Uuid>>
+    pub resource:Option<Vec<i64>>
 }

@@ -7,7 +7,6 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
-    pub forum_id: i64,
     pub name: String,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
@@ -17,25 +16,11 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::article::Entity")]
     Article,
-    #[sea_orm(
-        belongs_to = "super::forum::Entity",
-        from = "Column::ForumId",
-        to = "super::forum::Column::Id",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    Forum,
 }
 
 impl Related<super::article::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Article.def()
-    }
-}
-
-impl Related<super::forum::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Forum.def()
     }
 }
 

@@ -82,7 +82,7 @@ pub async fn delete(Garde(Json(IDs { ids })): Garde<Json<IDs>>) -> AppResult<Res
     )
 )]
 pub async fn update(
-    Path(id): Path<Uuid>,
+    Path(id): Path<i64>,
     Garde(Json(req)): Garde<Json<UpdateArticle>>,
 ) -> AppResult<Response> {
     let req = UpdateArticleQuery {

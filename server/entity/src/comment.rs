@@ -8,7 +8,6 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
     pub user_id: i64,
-    pub forum_id: i64,
     pub parent_id: Option<i64>,
     pub reply_id: Option<i64>,
     pub article_id: i64,
@@ -36,14 +35,6 @@ pub enum Relation {
     )]
     SelfRef,
     #[sea_orm(
-        belongs_to = "super::forum::Entity",
-        from = "Column::ForumId",
-        to = "super::forum::Column::Id",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    Forum,
-    #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::ReplyId",
         to = "super::user::Column::Id",
@@ -64,12 +55,6 @@ pub enum Relation {
 impl Related<super::article::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Article.def()
-    }
-}
-
-impl Related<super::forum::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Forum.def()
     }
 }
 

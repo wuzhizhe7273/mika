@@ -21,7 +21,6 @@ impl CategoryDAO {
         let c=query.req;
         let category = entity::category::ActiveModel {
             name: Set(c.name),
-            forum_id:Set(c.forum_id),
             ..Default::default()
         };
         let res = entity::category::Entity::insert(category)
@@ -78,7 +77,7 @@ impl CategoryDAO {
         Ok(rows)
     }
 
-    pub async fn update(req:UpdateCategoryQuery)->AppResult<Uuid>{
+    pub async fn update(req:UpdateCategoryQuery)->AppResult<i64>{
         let c=entity::category::Entity::find_by_id(req.id).one(db()).await?;
         let mut c:entity::category::ActiveModel=c.ok_or(AppError::NotFound)?.into();
         c.name=Set(req.name);
